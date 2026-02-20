@@ -1,0 +1,148 @@
+{
+    "evaluation_name": "32k Token Session-Window Accuracy Evaluation",
+    "description": "These are the 5 target conversational sessions that were injected as 'facts' into ChromaDB during the Phase IX evaluation. They were buried within approximately 128,000 characters of dense news article noise to test the Agentic RAG pipeline under a realistic, noisy retrieval environment.",
+    "noise_config": {
+        "total_blocks": 51,
+        "chars_per_block": 2500,
+        "total_noise_chars": "~127,500",
+        "source": "Synthetically generated news-style paragraphs covering topics such as economics, politics, sports, and technology."
+    },
+    "target_sessions": [
+        {
+            "id": "Alpha",
+            "injection_block": 5,
+            "retrieval_query": "Hey, do you remember our chat about Project Vanguard? Tell me the lead's name, the primary objective, the exact budget, and the name of the submersible.",
+            "graded_facts": [
+                {
+                    "fact": "Lead scientist is Dr. Elena Rostova",
+                    "required": true
+                },
+                {
+                    "fact": "Primary objective is deep-sea geothermal tapping in the Pacific",
+                    "required": true
+                },
+                {
+                    "fact": "Budget is exactly 850 million euros",
+                    "required": true
+                },
+                {
+                    "fact": "Submersible is called 'Leviathan' and deploys on October 4th",
+                    "required": true
+                }
+            ],
+            "turns": [
+                "I wanted to talk about Project Vanguard. Our lead scientist is Dr. Elena Rostova.",
+                "The primary objective is deep-sea geothermal tapping in the Pacific Ocean.",
+                "The allocated budget is exactly 850 million euros.",
+                "We are deploying the 'Leviathan' submersible on October 4th."
+            ]
+        },
+        {
+            "id": "Bravo",
+            "injection_block": 15,
+            "retrieval_query": "What was the Jira ticket number for that Redis caching issue we debugged, what was the port, and what was our permanent solution plan?",
+            "graded_facts": [
+                {
+                    "fact": "Jira ticket number is INFRA-992",
+                    "required": true
+                },
+                {
+                    "fact": "Port is 6379",
+                    "required": true
+                },
+                {
+                    "fact": "Temporary fix was increasing timeout to 5000ms",
+                    "required": true
+                },
+                {
+                    "fact": "Permanent solution is a connection pool with 50 idle nodes",
+                    "required": true
+                }
+            ],
+            "turns": [
+                "Let's debug the Redis caching issue. The Jira ticket is INFRA-992.",
+                "The problematic port is 6379.",
+                "As a temporary fix, we increased the connection timeout to 5000ms.",
+                "The permanent solution will be to implement a connection pool with 50 idle nodes."
+            ]
+        },
+        {
+            "id": "Charlie",
+            "injection_block": 25,
+            "retrieval_query": "Where are we going for the company retreat, what are the dates, and who is doing the catering?",
+            "graded_facts": [
+                {
+                    "fact": "Location is Whispering Pines Lodge in Estes Park, Colorado",
+                    "required": true
+                },
+                {
+                    "fact": "Dates are March 15th to 18th",
+                    "required": true
+                },
+                {
+                    "fact": "Catering is by Mountain Bites BBQ",
+                    "required": true
+                }
+            ],
+            "turns": [
+                "The company retreat will be held at Whispering Pines Lodge in Estes Park, Colorado.",
+                "The event is scheduled for March 15th through 18th.",
+                "Mountain Bites BBQ has been hired for the catering."
+            ]
+        },
+        {
+            "id": "Delta",
+            "injection_block": 35,
+            "retrieval_query": "What is the name of the cybernetic courier from my sci-fi novel idea, what does he smuggle, and what's the name of the rogue AI?",
+            "graded_facts": [
+                {
+                    "fact": "Protagonist's name is Jax",
+                    "required": true
+                },
+                {
+                    "fact": "He smuggles data chips implanted in his cybernetic arm",
+                    "required": true
+                },
+                {
+                    "fact": "The rogue AI is called The Architect",
+                    "required": true
+                }
+            ],
+            "turns": [
+                "I have an idea for a sci-fi novel. The protagonist is a cybernetic courier named Jax.",
+                "Jax smuggles data chips that are implanted directly in his cybernetic arm.",
+                "The main antagonist is a rogue AI called 'The Architect'."
+            ]
+        },
+        {
+            "id": "Echo",
+            "injection_block": 45,
+            "retrieval_query": "Can you summarize our Q3 marketing metrics? What was the acquisition cost, conversion rate, best channel, and total revenue?",
+            "graded_facts": [
+                {
+                    "fact": "Customer Acquisition Cost (CAC) dropped to $45",
+                    "required": true
+                },
+                {
+                    "fact": "Conversion rate for email campaign hit 4.2%",
+                    "required": true
+                },
+                {
+                    "fact": "Most successful channel was LinkedIn ads",
+                    "required": true
+                },
+                {
+                    "fact": "Total Q3 revenue was $2.1 million",
+                    "required": true
+                }
+            ],
+            "turns": [
+                "Let's review our Q3 marketing metrics.",
+                "Our Customer Acquisition Cost (CAC) dropped to $45.",
+                "The conversion rate for the email campaign hit 4.2%.",
+                "Our most successful channel was LinkedIn ads.",
+                "Total Q3 revenue was reported as $2.1 million."
+            ]
+        }
+    ]
+}
