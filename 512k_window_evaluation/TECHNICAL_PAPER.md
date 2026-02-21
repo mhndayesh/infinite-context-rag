@@ -3,7 +3,7 @@
 **Subtitle:** Achieving Reliable Long-Range Session Recall with Small Local LLMs at 512k Token Depth
 
 **Date:** February 2026  
-**Hardware:** NVIDIA RTX 5070 · 12 GB VRAM · Ollama local inference · `llama3.2:3b` + `nomic-embed-text`  
+**Hardware:** Intel Core i7-14700F · 64 GB RAM · NVIDIA RTX 5070 · 12 GB VRAM · Ollama local inference · `llama3.2:3b` + `nomic-embed-text`  
 **Database:** ChromaDB (persistent vector store)  
 **Test Depth:** 512,000 tokens (2,000,000 characters)
 

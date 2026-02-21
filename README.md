@@ -101,6 +101,8 @@ Full history including performance profiling, failed experiments, and architectu
 
 | Component | Spec |
 |-----------|------|
+| CPU | Intel Core i7-14700F |
+| RAM | 64 GB |
 | GPU | NVIDIA RTX 5070 |
 | VRAM | 12 GB |
 | Inference Engine | Ollama (local) |
