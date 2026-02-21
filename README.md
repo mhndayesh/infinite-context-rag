@@ -34,7 +34,8 @@ python experiment_5_phi4mini_baseline/eval_512k_run.py
 | **Forced CoT** `<think>` | 1/5 | 190s | **5/5** ✅ | 235s |
 | **Agentic Ctrl-F** | 2/5 | 187s | 3/5 | 280s |
 
-> Hardware: Intel i7-14700F · 64GB RAM · NVIDIA RTX 5070 12GB VRAM · Ollama local inference
+> Hardware: Intel i7-14700F · 64GB RAM · NVIDIA RTX 5070 12GB VRAM · Ollama local inference  
+> **Context window note:** All experiments ran at **`num_ctx = 4,096`** (8,192 for CoT to fit the `<think>` block) — far below phi4-mini's native **128k** limit. The 5/5 score was achieved not by holding 512k tokens in memory, but by the RAG pipeline surfacing only the right **~1,500 characters** into that 4k window. Same hardware requirement for both models (~2.5 GB VRAM).
 
 ### Per-Session Scores (all 5 sessions × all 6 experiments)
 
