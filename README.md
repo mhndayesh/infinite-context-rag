@@ -97,6 +97,16 @@ Full history including performance profiling, failed experiments, and architectu
 
 ---
 
+## Test Hardware
+
+| Component | Spec |
+|-----------|------|
+| GPU | NVIDIA RTX 5070 |
+| VRAM | 12 GB |
+| Inference Engine | Ollama (local) |
+| LLM | llama3.2:3b |
+| Embed Model | nomic-embed-text |
+
 ## Requirements
 - Python 3.10+
 - `chromadb`
