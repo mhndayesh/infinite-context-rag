@@ -47,58 +47,22 @@ import re
 # SECTION 2: ⚙️  CONFIGURATION  — CHANGE THESE TO FIT YOUR SETUP
 # ─────────────────────────────────────────────────────────────────────────────
 
-# ┌─ MODEL SETTINGS ──────────────────────────────────────────────────────────┐
-# │  LLM_MODEL: The model used for reasoning, routing, and answering.         │
-# │  Options tested:                                                           │
-# │    "phi4-mini:3.8b"   ← RECOMMENDED — 5/5 at 512k, fast, 2.5GB VRAM     │
-# │    "llama3.2:3b"      ← Lighter — 4/5 at 512k, 2.0GB VRAM               │
-# │    "llama3.1:8b"      ← Heavier — more accurate, needs ~5GB VRAM         │
-# │  Run `ollama list` to see your available models.                          │
-# └───────────────────────────────────────────────────────────────────────────┘
-LLM_MODEL = "phi4-mini:3.8b"
-
-# ┌─ EMBEDDING MODEL ─────────────────────────────────────────────────────────┐
-# │  Used to turn text into vectors for ChromaDB search.                      │
-# │  nomic-embed-text is fast, lightweight, and free. Don't change this       │
-# │  unless you know what you're doing.                                       │
-# └───────────────────────────────────────────────────────────────────────────┘
-EMBED_MODEL = "nomic-embed-text"
-
-# ┌─ DATABASE PATH ────────────────────────────────────────────────────────────┐
-# │  Where your memory is stored on disk (ChromaDB persistent store).         │
-# │  Change this to any folder path you want, e.g.:                           │
-# │    "./my_project_memory"   ← relative to where you run the script        │
-# │    "C:/Users/you/memory"   ← absolute path                               │
-# │  The folder is created automatically if it doesn't exist.                 │
-# └───────────────────────────────────────────────────────────────────────────┘
-DB_PATH = "./memory_db"
-
-# ┌─ OLLAMA SERVER URL ────────────────────────────────────────────────────────┐
-# │  Where your Ollama server is running.                                      │
-# │  Default is localhost. Change only if Ollama is on a different machine.   │
-# └───────────────────────────────────────────────────────────────────────────┘
-OLLAMA_URL = "http://localhost:11434"
-
-# ┌─ CONTEXT WINDOW ───────────────────────────────────────────────────────────┐
-# │  num_ctx: How many tokens the LLM can "see" at once.                      │
-# │    4096  → Safe for all GPUs with ≥4GB VRAM — RECOMMENDED                │
-# │    8192  → Better for long answers, needs ~6GB VRAM                       │
-# │    16384 → High quality, needs ~10GB VRAM                                 │
-# │  NOTE: phi4-mini supports up to 131,072 tokens natively, but we cap it   │
-# │  at 4096 to stay within consumer GPU memory limits. The RAG pipeline     │
-# │  handles the rest — retrieving only the right ~1,500 chars from the DB.  │
-# └───────────────────────────────────────────────────────────────────────────┘
-NUM_CTX = 4096
-
-# ┌─ SESSION TIMEOUT ──────────────────────────────────────────────────────────┐
-# │  How many seconds of idle time before a new conversation block starts.    │
-# │  After this timeout, new messages get a new group_id in the database,    │
-# │  which keeps conversations separated for cleaner retrieval.               │
-# │    300  = 5 minutes  ← default, good for most use cases                  │
-# │    3600 = 1 hour     ← good for long-running agents                      │
-# │    86400 = 1 day     ← good if you want one block per day                │
-# └───────────────────────────────────────────────────────────────────────────┘
-IDLE_TIMEOUT_SECONDS = 300
+# ┌─ CONFIGURATION (Environment variables override these defaults) ───────────┐
+# │                                                                            │
+# │  OLLAMA_URL  — URL of your Ollama server.                                  │
+# │  LLM_MODEL   — Main reasoning model (e.g., phi4-mini:3.8b)                │
+# │  EMBED_MODEL — Embedding model for search (e.g., nomic-embed-text)         │
+# │  DB_PATH     — File path for the persistent memory database                │
+# │  NUM_CTX     — LLM context window size (e.g., 4096)                       │
+# │  IDLE_TIMEOUT_SECONDS — Seconds before starting a new chat session block    │
+# │                                                                            │
+# └────────────────────────────────────────────────────────────────────────────┘
+OLLAMA_URL           = os.getenv("OLLAMA_URL", "http://localhost:11434")
+LLM_MODEL            = os.getenv("LLM_MODEL", "phi4-mini:3.8b")
+EMBED_MODEL          = os.getenv("EMBED_MODEL", "nomic-embed-text")
+DB_PATH              = os.getenv("DB_PATH", "./memory_db")
+NUM_CTX              = int(os.getenv("NUM_CTX", "4096"))
+IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "300"))
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SECTION 3: INITIALIZATION  (no changes needed)

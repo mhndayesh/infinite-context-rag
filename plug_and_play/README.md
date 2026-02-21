@@ -7,45 +7,33 @@ Drop `memory_engine.py` into your project and call one function.
 
 ---
 
-## ⚡ 5-Minute Setup
+## ⚡ Quick Start
 
-### 1. Install dependencies
+### Option A: Local (No Docker)
 
-```bash
-pip install chromadb ollama pynvml
-```
+1. **Install dependencies:** `pip install chromadb ollama pynvml`
+2. **Pull models:** `ollama pull phi4-mini:3.8b` and `ollama pull nomic-embed-text`
+3. **Run:** `python memory_engine.py`
 
-### 2. Pull the models
+### Option B: Docker (Recommended)
 
-```bash
-ollama pull phi4-mini:3.8b       # LLM — 2.5GB, 5/5 at 512k depth
-ollama pull nomic-embed-text     # Embeddings — 274MB, needed for search
-```
+Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) with NVIDIA Container Toolkit (for GPU).
 
-### 3. Copy the file into your project
-
-```
-your-project/
-├── memory_engine.py   ← copy this in
-└── your_app.py
-```
-
-### 4. Use it
-
-```python
-from memory_engine import chat_logic
-
-answer, _ = chat_logic("What did we decide about the database schema?")
-print(answer)
-```
-
-That's it. Memory is stored automatically and persists across restarts.
+1. **Spin up the stack:**
+   ```bash
+   docker compose up -d
+   ```
+2. **Interactive chat:**
+   ```bash
+   docker compose run --rm memory-engine
+   ```
+   *(This auto-pulls all models and starts the chatbot)*
 
 ---
 
 ## ⚙️ Configuration
 
-Open `memory_engine.py` and edit **SECTION 2** at the top:
+You can configure the engine via **environment variables** (in `docker-compose.yml` or your `.env`) or by editing **SECTION 2** of `memory_engine.py`:
 
 ```python
 LLM_MODEL   = "phi4-mini:3.8b"      # swap to llama3.2:3b for lighter footprint

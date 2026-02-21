@@ -1,0 +1,94 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.yml — Agentic RAG Memory Engine Full Stack
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Starts two containers:
+#   1. ollama      — local LLM server with GPU passthrough
+#   2. memory-engine — the RAG memory engine (our app)
+#
+# QUICK START:
+#   docker compose up
+#
+# INTERACTIVE CHAT:
+#   docker compose run --rm memory-engine
+#
+# TO CHANGE THE MODEL:
+#   Edit LLM_MODEL below (must be a valid ollama model name)
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ┌─ SERVICE 1: OLLAMA ──────────────────────────────────────────────────────┐
+  # │  The local LLM server. Handles both chat inference and embeddings.      │
+  # │  GPU passthrough is enabled by default for NVIDIA GPUs.                │
+  # │  Models are stored in a named volume (persists between restarts).      │
+  # └─────────────────────────────────────────────────────────────────────────┘
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"   # Expose Ollama API on host (optional — for debugging)
+    volumes:
+      - ollama_models:/root/.ollama   # Persist downloaded models across restarts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            # ┌─ GPU CONFIGURATION ────────────────────────────────────────┐
+            # │  Remove this entire 'devices' block if you have no GPU.   │
+            # │  The engine will fall back to CPU (much slower).          │
+            # └────────────────────────────────────────────────────────────┘
+            - driver: nvidia
+              count: all           # Use all available GPUs
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ┌─ SERVICE 2: MEMORY ENGINE ───────────────────────────────────────────────┐
+  # │  The RAG memory app. Depends on Ollama being healthy first.            │
+  # │  Memory (ChromaDB) is stored in a named volume for persistence.       │
+  # └─────────────────────────────────────────────────────────────────────────┘
+  memory-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: memory-engine
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_healthy
+    volumes:
+      - memory_db:/app/memory_db     # Persist the ChromaDB vector database
+
+    environment:
+      # ┌─ CHANGE THESE TO CONFIGURE ──────────────────────────────────────┐
+      # │  LLM_MODEL: main reasoning model                                │
+      # │    Recommended: phi4-mini:3.8b (5/5 score, ~6.4GB VRAM)        │
+      # │    Lighter:     llama3.2:3b   (4/5 score, ~2.5GB VRAM)         │
+      # │                                                                  │
+      # │  NUM_CTX: token context window                                  │
+      # │    4096  = safe for all GPUs with ≥4GB VRAM (recommended)      │
+      # │    8192  = better quality, needs ~6GB VRAM                      │
+      # └──────────────────────────────────────────────────────────────────┘
+      - OLLAMA_URL=http://ollama:11434   # DO NOT CHANGE — internal Docker hostname
+      - LLM_MODEL=phi4-mini:3.8b
+      - EMBED_MODEL=nomic-embed-text
+      - DB_PATH=/app/memory_db
+      - NUM_CTX=4096
+      - IDLE_TIMEOUT_SECONDS=300
+    stdin_open: true       # Allows interactive input (docker compose run)
+    tty: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# VOLUMES — data persists even after `docker compose down`
+# To fully reset memory: docker compose down -v
+# ─────────────────────────────────────────────────────────────────────────────
+volumes:
+  ollama_models:    # Stores downloaded LLM and embedding model weights
+  memory_db:        # Stores your ChromaDB conversation memory
