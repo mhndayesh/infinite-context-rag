@@ -108,6 +108,7 @@ Full history including performance profiling, failed experiments, and architectu
 | [`512k_window_evaluation/session_512k_accuracy_report_run2.md`](512k_window_evaluation/session_512k_accuracy_report_run2.md) | Full verbatim LLM answers + scores |
 | [`512k_window_evaluation/TECHNICAL_PAPER.md`](512k_window_evaluation/TECHNICAL_PAPER.md) | Full architecture paper |
 | [`512k_window_evaluation/WALKTHROUGH.md`](512k_window_evaluation/WALKTHROUGH.md) | Bug table, results, run comparison |
+| [`512k_window_evaluation/experiment_5_phi4mini_baseline/`](512k_window_evaluation/experiment_5_phi4mini_baseline/) | **5/5 perfect score** — phi4-mini:3.8b code + report |
 
 ---
 
@@ -120,7 +121,7 @@ Full history including performance profiling, failed experiments, and architectu
 | GPU | NVIDIA RTX 5070 |
 | VRAM | 12 GB |
 | Inference Engine | Ollama (local) |
-| LLM | llama3.2:3b |
+| LLM | `phi4-mini:3.8b` ⭐ (best) · `llama3.2:3b` (baseline) |
 | Embed Model | nomic-embed-text |
 
 ## Requirements
