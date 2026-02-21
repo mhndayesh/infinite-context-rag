@@ -23,3 +23,9 @@ Thumbs.db
 experiment_*/exp*_memory_db/
 experiment_*/evaluation_integrity.log
 
+
+experiment_6_phi4mini_cot/exp6_memory_db/
+experiment_7_phi4mini_ctrlf/exp7_memory_db/
+experiment_6_phi4mini_cot/evaluation_integrity.log
+experiment_7_phi4mini_ctrlf/evaluation_integrity.log
+
