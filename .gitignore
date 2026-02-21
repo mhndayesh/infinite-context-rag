@@ -19,3 +19,7 @@ ENV/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+experiment_*/exp*_memory_db/
+experiment_*/evaluation_integrity.log
+

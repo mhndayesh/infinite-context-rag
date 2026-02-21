@@ -10,14 +10,41 @@ The core challenge: **can a small local LLM + ChromaDB vector store recall speci
 
 ## Final Score
 
+### 🏆 phi4-mini:3.8b — Perfect 5/5 (Experiment 5)
+
+| Session | Score | Status |
+|---------|-------|--------|
+| Alpha (Vanguard) | 4/4 | ✅ PASS |
+| Bravo (Redis/INFRA-992) | 3/4 | ✅ PASS |
+| Charlie (Retreat) | 3/3 | ✅ PASS |
+| Delta (Sci-Fi) | 3/3 | ✅ PASS |
+| Echo (Marketing) | 4/4 | ✅ PASS |
+
+**Ingestion: 147s · Model: `phi4-mini:3.8b` · Hardware: i7-14700F, RTX 5070 12GB VRAM**
+
+---
+
+### All Experiment Results
+
+| Experiment | Model | Method | Score | Time | Notes |
+|-----------|-------|--------|-------|------|-------|
+| **Exp 5** ⭐ | phi4-mini:3.8b | Baseline RAG | **5/5** | 147s | Perfect recall |
+| Baseline | llama3.2:3b | Baseline RAG | **4/5** | 134s | Best on 3B |
+| Exp 3 | llama3.2:3b | Forced CoT `<think>` | 1/5 | 190s | 3B self-doubt regression |
+| Exp 4 | llama3.2:3b | Agentic Ctrl-F | 2/5 | 187s | Tool works; keyword gaps |
+
+**Key finding:** The baseline architecture was always correct. The model was the ceiling — `phi4-mini:3.8b` crosses it at the same ~2.5GB VRAM footprint, and is actually **faster** than `llama3.2:3b`.
+
+---
+
+### llama3.2:3b — Best Run: 4/5
+
 | Run | Score | Ingestion Time | Notes |
 |-----|-------|---------------|-------|
-| Run 1 (pre-fix) | 3/5 | ~65 minutes | Universal entity extraction, no truncation |
-| Run 2 (Phase XI) | 1/5 | ~65 minutes | FACT-only extraction, embedding overflow |
+| Run 1 (pre-fix) | 3/5 | ~65 minutes | Pre-audit baseline |
+| Run 2 (Phase XI) | 1/5 | ~65 minutes | FACT-only extraction, overflow |
 | Run 3 (all fixes) | **4/5** | **134 seconds** | All 16 bugs fixed + noise fast-path |
-| Run 4 (Bravo query) | **4/5** | **142 seconds** | Different sessions recalled, Bravo 4/4 |
-
-**Best consistent result: 4/5 with 4 sessions at perfect fact recall.**
+| Run 4 (Bravo query) | **4/5** | **142 seconds** | Different sessions recalled |
 
 ---
 

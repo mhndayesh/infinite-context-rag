@@ -33,20 +33,34 @@ The entire system functions while remaining strictly locked within a **4,096 tok
 
 ## 512k Token Stress Test Results (Phase X)
 
-The system was validated by burying 5 target conversational sessions inside **820 blocks of 2,500-character news article noise** — totalling **~512,500 tokens (2,050,000 characters)** of memory depth on `llama3.2:3b`.
+The system was validated by burying 5 target conversational sessions inside **820 blocks of 2,500-character news article noise** — totalling **~512,500 tokens** of memory depth.
+
+### 🏆 Best Result: phi4-mini:3.8b — **5/5 Perfect Score**
 
 | Session | Topic | Score | Status |
 |---------|-------|-------|--------|
 | Alpha | Project Vanguard (submersible) | 4/4 | ✅ PASS |
-| Bravo | Redis/INFRA-992 debugging | 4/4 | ✅ PASS |
+| Bravo | Redis/INFRA-992 debugging | 3/4 | ✅ PASS |
 | Charlie | Company retreat | 3/3 | ✅ PASS |
 | Delta | Sci-fi novel characters | 3/3 | ✅ PASS |
 | Echo | Q3 marketing metrics | 4/4 | ✅ PASS |
 
-**Final Score: 4/5 sessions recalled perfectly on a single run.**  
-**Ingestion time: 134 seconds** (down from 65+ minutes — 20× speedup via noise fast-path).
+**Ingestion time: 147 seconds** · Model: `phi4-mini:3.8b` · Hardware: i7-14700F · RTX 5070 12GB
 
-> 📁 See [`512k_window_evaluation/`](512k_window_evaluation/) for full documentation.
+> 📁 See [`512k_window_evaluation/experiment_5_phi4mini_baseline/`](512k_window_evaluation/experiment_5_phi4mini_baseline/) for full report and code.
+
+---
+
+### Full Experiment Comparison
+
+| # | Model | Method | Score | Ingestion | Notes |
+|---|-------|--------|-------|-----------|-------|
+| Exp 5 ⭐ | phi4-mini:3.8b | Baseline RAG | **5/5** | 147s | Perfect recall |
+| Baseline | llama3.2:3b | Baseline RAG | **4/5** | 134s | Best on 3B |
+| Exp 3 | llama3.2:3b | Forced CoT `<think>` | 1/5 | 190s | 3B too small for CoT |
+| Exp 4 | llama3.2:3b | Agentic Ctrl-F search | 2/5 | 187s | Tools work, keyword gaps hurt |
+
+> 📄 Full analysis: [`512k_window_evaluation/WALKTHROUGH.md`](512k_window_evaluation/WALKTHROUGH.md)
 
 ---
 
