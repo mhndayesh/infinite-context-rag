@@ -36,6 +36,16 @@ python experiment_5_phi4mini_baseline/eval_512k_run.py
 
 > Hardware: Intel i7-14700F · 64GB RAM · NVIDIA RTX 5070 12GB VRAM · Ollama local inference  
 > **Context window note:** All experiments ran at **`num_ctx = 4,096`** (8,192 for CoT to fit the `<think>` block) — far below phi4-mini's native **128k** limit. The 5/5 score was achieved not by holding 512k tokens in memory, but by the RAG pipeline surfacing only the right **~1,500 characters** into that 4k window. Same hardware requirement for both models (~2.5 GB VRAM).
+>
+> **Live VRAM log (from Ollama during phi4-mini run):**
+> ```
+> ggml_backend_cuda_device_get_memory GPU-3a8c41b4 utilizing NVML
+>   total:  12,820,938,752 bytes  (~12.8 GB)
+>   free:    6,452,621,312 bytes  (~6.45 GB)
+>   used:   ~6,368,317,440 bytes  (~6.37 GB)  ← phi4-mini:3.8b + nomic-embed-text
+> ```
+> Both inference runners (LLM + embedding model) fully fit within the 12GB budget with 6.45GB to spare.
+
 
 ### Per-Session Scores (all 5 sessions × all 6 experiments)
 
