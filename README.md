@@ -23,7 +23,8 @@ The system has overcome the "Semantic Noise" ceiling by implementing **Hybrid St
 ## 📖 Research & Performance Reports
 - [**FULL ARCHITECTURAL JOURNEY**](FULL_ARCHITECTURAL_JOURNEY_INFINITE_CONTEXT_RAG.md) - The 14-phase chronicle from failure to 100% success.
 - [**TECHNICAL DEEP DIVE**](TECHNICAL_DEEP_DIVE.md) - Deep math/logic behind RRF, BM25, and Agentic Routing.
-- [**VALUE PROPOSITION**](perfect%20recal%20512k%20final%20version%20working/VALUE_PROPOSITION.md) - Why local infinite-context RAG is the future for Enterprise Privacy.
+- [**VALUE PROPOSITION**](perfect%20recal%20512k%20final%20version%20working/VALUE_PROPOSITION.md) - Why local infinite-context RAG is the future.
+- [**DOCKER SETUP**](docker/) - Containerized deployment for the full RAG stack.
 
 ---
 
