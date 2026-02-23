@@ -206,6 +206,11 @@ def main():
             fout.flush()
             
             # Cleanup
+            # IMPORTANT: Sleep 2 seconds to allow the background _save() thread from the
+            # CURRENT test to finish writing before we wipe state for the NEXT test.
+            # Without this, the async thread from test N can still be running when test N+1
+            # resets the DB, adding its result to the wrong (or already deleted) collection.
+            time.sleep(2)
             memory_engine._client = None
             memory_engine._collection = None
             cleanup_db(db_path)
