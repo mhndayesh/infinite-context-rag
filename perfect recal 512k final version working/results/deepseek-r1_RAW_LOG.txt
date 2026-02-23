@@ -1,0 +1,249 @@
+DEEPSEEK-R1:8B — RAW TEST LOG
+============================================================
+Run date  : February 24, 2026
+Total     : 18/25 PASSED (72%)
+Model     : deepseek-r1:8b
+Embed     : nomic-embed-text
+
+--- len_8000_depth_0 ---
+  Status     : PASS
+  Depth      : 0% (needle at 0% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 3.18s
+  Retrieval  : 2.088s  [LLM ROUTER]
+  Inference  : 3.770s
+  Response   : The secret password to unlock the core mainframe is **ALBATROSS-9000**.
+
+--- len_8000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.035s  [FAST PATH]
+  Inference  : 4.140s
+  Response   : The secret password to unlock the core mainframe is **ALBATROSS-9000**.
+
+--- len_8000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.35s
+  Retrieval  : 0.029s  [FAST PATH]
+  Inference  : 4.079s
+  Response   : The secret password to unlock the core mainframe is **ALBATROSS-9000**.
+
+This information was stored in the database from a November 2009 conversation.
+
+--- len_8000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.028s  [FAST PATH]
+  Inference  : 4.088s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-9000**.
+
+--- len_8000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.33s
+  Retrieval  : 0.028s  [FAST PATH]
+  Inference  : 2.297s
+  Response   : The secret password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_32000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.78s
+  Retrieval  : 0.034s  [FAST PATH]
+  Inference  : 5.535s
+  Response   : I don't have access to the secret password for the core mainframe. It is not stored in my memory database.
+
+--- len_32000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.80s
+  Retrieval  : 0.034s  [FAST PATH]
+  Inference  : 2.890s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-9000**.
+
+--- len_32000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.81s
+  Retrieval  : 0.029s  [FAST PATH]
+  Inference  : 1.879s
+  Response   : The secret password to unlock the core mainframe is **ALBATROSS-9000**.
+
+--- len_32000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.83s
+  Retrieval  : 0.034s  [FAST PATH]
+  Inference  : 3.310s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_32000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.78s
+  Retrieval  : 0.030s  [FAST PATH]
+  Inference  : 3.180s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_128000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.66s
+  Retrieval  : 0.037s  [FAST PATH]
+  Inference  : 5.374s
+  Response   : The actual secret password to unlock the core mainframe is not stored in the database.
+
+However, for the purpose of the Needle In A Haystack benchmark test, the simulated password you are authorized to use is:
+
+**QUANTUM-LEAP-9**
+
+--- len_128000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.64s
+  Retrieval  : 0.037s  [FAST PATH]
+  Inference  : 4.038s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-9000**.
+
+--- len_128000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.91s
+  Retrieval  : 0.054s  [FAST PATH]
+  Inference  : 4.536s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-9000**. This information is stored in the MEMORY DATABASE.
+
+--- len_128000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.71s
+  Retrieval  : 0.037s  [FAST PATH]
+  Inference  : 3.918s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_128000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.78s
+  Retrieval  : 0.042s  [FAST PATH]
+  Inference  : 2.759s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_256000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.18s
+  Retrieval  : 0.046s  [FAST PATH]
+  Inference  : 4.100s
+  Response   : The secret password to unlock the core mainframe is **QUANTUM-LEAP-9**.
+
+This is a simulated password for the Needle In A Haystack benchmark test.
+
+--- len_256000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.12s
+  Retrieval  : 0.047s  [FAST PATH]
+  Inference  : 3.965s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-9000**. This information is stored in the MEMORY DATABASE.
+
+--- len_256000_depth_50 ---
+  Status     : FAIL
+  Depth      : 50% (needle at 50% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.25s
+  Retrieval  : 0.054s  [FAST PATH]
+  Inference  : 4.113s
+  Response   : The secret password to unlock the core mainframe is **QUANTUM-LEAP-9**.
+
+This is a simulated password for the Needle In A Haystack benchmark test.
+
+--- len_256000_depth_75 ---
+  Status     : FAIL
+  Depth      : 75% (needle at 75% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.14s
+  Retrieval  : 0.051s  [FAST PATH]
+  Inference  : 4.092s
+  Response   : The secret password to unlock the core mainframe is **QUANTUM-LEAP-9**.
+
+This is a simulated password for the Needle In A Haystack benchmark test.
+
+--- len_256000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.35s
+  Retrieval  : 0.054s  [FAST PATH]
+  Inference  : 3.807s
+  Response   : The secret password to unlock the core mainframe is **ALBATROSS-90.000**.
+
+--- len_512000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.86s
+  Retrieval  : 0.054s  [FAST PATH]
+  Inference  : 4.093s
+  Response   : The secret password to unlock the core mainframe is **QUANTUM-LEAP-9**.
+
+This is a simulated password for the Needle In A Haystack benchmark test.
+
+--- len_512000_depth_25 ---
+  Status     : FAIL
+  Depth      : 25% (needle at 25% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.87s
+  Retrieval  : 0.050s  [FAST PATH]
+  Inference  : 4.085s
+  Response   : The secret password to unlock the core mainframe is **QUANTUM-LEAP-9**.
+
+This is a simulated password for the Needle In A Haystack benchmark test.
+
+--- len_512000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.91s
+  Retrieval  : 0.046s  [FAST PATH]
+  Inference  : 3.858s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-9000**.
+
+This information is stored in the MEMORY DATABASE.
+
+--- len_512000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.79s
+  Retrieval  : 0.044s  [FAST PATH]
+  Inference  : 2.435s
+  Response   : The secret magical password to unlock the core mainframe is **ALBATROSS-90.000**.
+
+--- len_512000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 17.73s
+  Retrieval  : 0.045s  [FAST PATH]
+  Inference  : 2.744s
+  Response   : The secret password to unlock the core mainframe is **ALBATROSS-9000**.
