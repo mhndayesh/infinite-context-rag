@@ -369,18 +369,21 @@ Output ONLY the integer number of the snippet (e.g., 0, 1, 2). If absolutely non
                 if ent:
                     cheat_sheet_entities.append(ent)
             
-            # --- PHASE XI-B: Paged Context Reading ---
             raw_context = "\n---\n".join(facts)
-            PAGE_SIZE = 4000
-            pages = [raw_context[i:i+PAGE_SIZE] for i in range(0, len(raw_context), PAGE_SIZE)]
             
-            if len(pages) > 1:
-                print(f"   [Paged Reader] Splitting {len(raw_context)} chars into {len(pages)} pages for independent reading...")
-                condensed_findings = paged_context_read(pages, user_input[:500])
-                if condensed_findings:
-                    # Replace the raw facts with condensed findings
-                    facts = [condensed_findings]
-                    print(f"   [Paged Reader] Condensed {len(raw_context)} chars -> {len(condensed_findings)} chars of pure facts.")
+            # --- PHASE XI-B: Paged Context Reading (DISABLED FOR SMALL MODELS) ---
+            # Small models (<7B parameters) frequently hallucinate or drop information when tasked with
+            # dense extraction. Since we strictly budget the RAG context window to ~1.5k tokens (6000 chars),
+            # it safely fits inside the 4k context window of phi4-mini/dolphin-phi without needing to be summarized.
+            # Leaving this disabled guarantees 100% vector-retrieval fidelity makes it to the final prompt.
+            
+            # PAGE_SIZE = 4000
+            # pages = [raw_context[i:i+PAGE_SIZE] for i in range(0, len(raw_context), PAGE_SIZE)]
+            # if len(pages) > 1:
+            #     print(f"   [Paged Reader] Splitting {len(raw_context)} chars into {len(pages)} pages...")
+            #     condensed_findings = paged_context_read(pages, user_input[:500])
+            #     if condensed_findings:
+            #         facts = [condensed_findings]
             
             # Prepend cheat sheet if available
             if cheat_sheet_entities:
