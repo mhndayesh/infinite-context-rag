@@ -366,27 +366,56 @@ Output ONLY the integer number of the snippet (e.g., 0, 1, 2, 3, 4). If absolute
             current_len = len(combined[center_idx][0])
             included_indices = [center_idx]
             
+            # --- FIX 1: Right-Side Bias at Document Start ---
+            # When needle is at center_idx==0 (start of doc), there is no left content.
+            # Instead of wasting half the budget on empty left expansion, go right-only.
+            # This prevents the needle (80 chars) from being buried under 6000 chars of
+            # unrelated right-side text when there's nothing to its left.
+            at_document_start = (center_idx == 0)
+            
             left, right = center_idx - 1, center_idx + 1
             while (left >= 0 or right < len(combined)) and current_len < budget:
-                # Prioritize content *before* the hit to provide leading context, then after
-                if left >= 0:
-                    l_len = len(combined[left][0])
-                    if current_len + l_len <= budget:
-                        included_indices.append(left)
-                        current_len += l_len
-                    left -= 1
-                if right < len(combined) and current_len < budget:
-                    r_len = len(combined[right][0])
-                    if current_len + r_len <= budget:
-                        included_indices.append(right)
-                        current_len += r_len
-                    right += 1
+                if at_document_start:
+                    # Document start: ONLY expand right, never left
+                    if right < len(combined):
+                        r_len = len(combined[right][0])
+                        if current_len + r_len <= budget:
+                            included_indices.append(right)
+                            current_len += r_len
+                        right += 1
+                    else:
+                        break
+                else:
+                    # Normal case: expand left and right alternately
+                    if left >= 0:
+                        l_len = len(combined[left][0])
+                        if current_len + l_len <= budget:
+                            included_indices.append(left)
+                            current_len += l_len
+                        left -= 1
+                    if right < len(combined) and current_len < budget:
+                        r_len = len(combined[right][0])
+                        if current_len + r_len <= budget:
+                            included_indices.append(right)
+                            current_len += r_len
+                        right += 1
                     
             included_indices.sort()
+            
+            # --- FIX 2: Pin the Keyword-Winner Chunk First (Primacy Bias Fix) ---
+            # LLMs pay much more attention to text at the TOP of their context.
+            # We always put the exact needle chunk (the one the pre-filter selected)
+            # as the FIRST item the LLM reads, before any surrounding context.
+            # This way: even if there are 5900 chars of surrounding text after it,
+            # the answer is the very first line the LLM sees.
+            needle_chunk_text = combined[center_idx][0]
+            facts_ordered = [needle_chunk_text]  # Needle goes FIRST
             for k in included_indices:
-                facts.append(combined[k][0])
+                if k != center_idx:  # Don't duplicate the needle chunk
+                    facts.append(combined[k][0])
+            facts = facts_ordered + facts  # Needle pinned at top
                 
-            print(f"   [RAG Stage 3] Reassembled contextual window ({current_len} chars) around chunk {center_idx} (Group: {target_group_id[:8]}...)")
+            print(f"   [RAG Stage 3] Reassembled contextual window ({current_len} chars) around chunk {center_idx} (Group: {target_group_id[:8]}...) | Doc-start:{at_document_start}")
             
             # --- PHASE XI-A: Collect Entity Cheat Sheets ---
             cheat_sheet_entities = []
