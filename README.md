@@ -1,26 +1,46 @@
 # Agentic RAG Memory Architecture
 
-> **Persistent, session-aware memory for local LLMs — validated at 512,000 token depth on consumer hardware.**  
+> **Persistent, session-aware memory for local LLMs — validated at 100% (25/25) accuracy on 512,000 token depth.**  
 > No fine-tuning. No cloud API. Zero cost per query. Complete data privacy.
 
 ---
 
-## ⭐ Best & Fastest: `phi4-mini:3.8b` + Baseline RAG — **5/5 Perfect Score in 147s**
+## 🏆 THE ULTIMATE VICTORY: 100% Recall at 512k Context
+
+**Final Score: 25/25 (100% Accuracy)**
+
+The system has overcome the "Semantic Noise" ceiling by implementing **Hybrid Stage 1 Retrieval (RRF)**. It now retrieves "hidden needles" with perfect precision even when they are buried at the very beginning of a 2,000,000-character document.
+
+- **Stage 1 Recall:** 100% (Vector + BM25 Hybrid)
+- **Stage 2 Routing:** 100% (BM25 Reranker)
+- **Total Pipeline:** ~6-8s (Local `deepseek-r1:8b`)
+
+> [!IMPORTANT]
+> **🚀 PRODUCTION READY:** Use the [**perfect recal 512k final version working**](perfect%20recal%20512k%20final%20version%20working/) folder for the standalone, 100% accuracy engine.
+
+---
+
+## 📖 Research & Performance Reports
+- [**FULL ARCHITECTURAL JOURNEY**](FULL_ARCHITECTURAL_JOURNEY_INFINITE_CONTEXT_RAG.md) - The 14-phase chronicle from failure to 100% success.
+- [**TECHNICAL DEEP DIVE**](TECHNICAL_DEEP_DIVE.md) - Deep math/logic behind RRF, BM25, and Agentic Routing.
+- [**VALUE PROPOSITION**](perfect%20recal%20512k%20final%20version%20working/VALUE_PROPOSITION.md) - Why local infinite-context RAG is the future for Enterprise Privacy.
+
+---
+
+## ⭐ Historical Milestone: `phi4-mini:3.8b` + Baseline RAG — **5/5 Score**
+*(Previous breakthrough on 32k-128k context ranges)*
 
 ```bash
 # Pull the model
 ollama pull phi4-mini:3.8b
 ollama pull nomic-embed-text
 
-# Run the memory engine interactively
+# Run the memory engine (Legacy Version)
 python experiment_5_phi4mini_baseline/memory_engine.py
-
-# Run the full 512k evaluation
-python experiment_5_phi4mini_baseline/eval_512k_run.py
 ```
 
 > 📁 Code: [`experiment_5_phi4mini_baseline/`](experiment_5_phi4mini_baseline/)  
-> 📄 Results: [`experiment_5_phi4mini_baseline/session_512k_accuracy_report.md`](experiment_5_phi4mini_baseline/session_512k_accuracy_report.md)
+> 📄 Results: [`research_papers_and_reports/session_512k_accuracy_report.md`](research_papers_and_reports/session_512k_accuracy_report.md)
 
 ---
 
