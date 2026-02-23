@@ -270,39 +270,63 @@ def chat_logic(user_input):
 
     # Stage 2: Agentic Selection (Which chunk actually matters?)
     target_group_id = None
+    selected_idx = 0
     if len(doc_hits) > 1:
-        snippet_list = ""
-        # Evaluate up to the top 3 hits but TRUNCATE each to fit router 4k window
-        eval_hits = doc_hits[:3] 
-        for i, doc in enumerate(eval_hits):
-            snippet_list += f"\n--- SNIPPET {i} ---\n{doc[:800]}\n"  # Cap each snippet at 800 chars
-            
-        selection_prompt = f"""You are a search router. The user asked: "{user_input[:200]}"
-Below are {len(eval_hits)} snippets from a database. 
-Identify WHICH SINGLE SNIPPET is MOST LIKELY to contain the answer or be relevant to the topic. 
-Output ONLY the integer number of the snippet (e.g., 0, 1, 2). If absolutely none seem relevant, output 0 as a default. Do not explain.
+        
+        # --- FAST PATH: Keyword Pre-Filter (scan all 10 hits, O(n) string ops) ---
+        # The LLM router only sees top 3 snippets. If the answer chunk is ranked 4-10,
+        # the router misses it entirely. This pre-filter scans ALL 10 hits for exact
+        # keyword matches from the expanded query and short-circuits the LLM if confident.
+        query_keywords = [kw.strip().lower() for kw in expanded_query.replace(',', ' ').split() if len(kw.strip()) > 3]
+        keyword_scores = []
+        for i, doc in enumerate(doc_hits):
+            doc_lower = doc.lower()
+            score = sum(1 for kw in query_keywords if kw in doc_lower)
+            keyword_scores.append((score, i))
+        
+        keyword_scores.sort(reverse=True)
+        best_keyword_score, best_keyword_idx = keyword_scores[0]
+        second_best_score = keyword_scores[1][0] if len(keyword_scores) > 1 else 0
+        
+        # If best keyword match has 2+ matches AND is clearly better than runner-up, trust it
+        if best_keyword_score >= 2 and best_keyword_score > second_best_score:
+            selected_idx = best_keyword_idx
+            if isinstance(meta_hits[selected_idx], dict):
+                target_group_id = meta_hits[selected_idx].get("group_id")
+            print(f"   [Agentic Route] Keyword fast-path: hit #{selected_idx} scored {best_keyword_score} keyword matches → Group {str(target_group_id)[:8]}...")
+        else:
+            # --- SLOW PATH: LLM Router (original logic, only if keyword pre-filter is ambiguous) ---
+            snippet_list = ""
+            # Show top 5 hits to the router (up from 3) with more context per snippet
+            eval_hits = doc_hits[:5]
+            for i, doc in enumerate(eval_hits):
+                snippet_list += f"\n--- SNIPPET {i} ---\n{doc[:600]}\n"  # 600 chars × 5 = 3000 chars
+                
+            selection_prompt = f"""You are a search router. The user asked: "{user_input[:200]}"
+Below are {len(eval_hits)} snippets from a database.
+Identify WHICH SINGLE SNIPPET explicitly contains the specific answer, value, code, or fact the user is asking for.
+Output ONLY the integer number of the snippet (e.g., 0, 1, 2, 3, 4). If absolutely none contain the answer, output 0 as a default. Do not explain.
 
 {snippet_list}
 """
-        try:
-            with inference_lock:
-                sel_response = ollama.chat(
-                    model=LLM_MODEL, 
-                    messages=[{'role': 'system', 'content': 'You are a strict routing AI. Only output integers.'},
-                              {'role': 'user', 'content': selection_prompt}],
-                    options={"num_ctx": 4096, "temperature": 0.0} # Zero temp for strict logic
-                )
-            sel_ans = sel_response['message']['content'].strip()
-            # Extract the first integer found
-            match = re.search(r'-?\d+', sel_ans)
-            print(f"   [Agentic Route] LLM raw output: '{sel_ans}'")
-            if match:
-                selected_idx = int(match.group())
-                print(f"   [Agentic Route] Extracted index: {selected_idx} (out of {len(eval_hits)})")
-                if 0 <= selected_idx < len(eval_hits):
-                    target_group_id = meta_hits[selected_idx].get("group_id")
-        except Exception as e:
-            print(f"\n[Agentic Selection Error] {e}")
+            try:
+                with inference_lock:
+                    sel_response = ollama.chat(
+                        model=LLM_MODEL, 
+                        messages=[{'role': 'system', 'content': 'You are a strict routing AI. Only output integers.'},
+                                  {'role': 'user', 'content': selection_prompt}],
+                        options={"num_ctx": 4096, "temperature": 0.0}
+                    )
+                sel_ans = sel_response['message']['content'].strip()
+                match = re.search(r'-?\d+', sel_ans)
+                print(f"   [Agentic Route] LLM raw output: '{sel_ans}'")
+                if match:
+                    selected_idx = int(match.group())
+                    print(f"   [Agentic Route] Extracted index: {selected_idx} (out of {len(eval_hits)})")
+                    if 0 <= selected_idx < len(eval_hits):
+                        target_group_id = meta_hits[selected_idx].get("group_id")
+            except Exception as e:
+                print(f"\n[Agentic Selection Error] {e}")
 
     # Fallback to the top 1 if selection fails
     if target_group_id is None and len(meta_hits) > 0:
@@ -311,6 +335,8 @@ Output ONLY the integer number of the snippet (e.g., 0, 1, 2). If absolutely non
             print(f"   [Agentic Route] Fallback to top hit group: {target_group_id}")
         else:
              print("   [Agentic Route] Fallback failed: Top hit has no group_id")
+
+
 
 
     # Stage 3: Full Context Exhumation (Dynamically Centered)
