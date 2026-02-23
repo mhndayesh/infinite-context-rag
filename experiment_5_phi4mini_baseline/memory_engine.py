@@ -33,7 +33,7 @@ except ImportError:
     pynvml = None
 
 # --- CONFIGURATION ---
-LLM_MODEL = "phi4-mini:3.8b"
+LLM_MODEL = "deepseek-r1:8b"
 EMBED_MODEL = "nomic-embed-text"
 DB_PATH = "./exp5_memory_db"
 

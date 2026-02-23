@@ -198,9 +198,18 @@ def main():
             with patch.object(memory_engine.ollama, 'chat', side_effect=intercept_chat):
                 answer, timings = memory_engine.chat_logic(QUESTION)
             
+            # Strip DeepSeek-R1 <think>...</think> reasoning blocks before grading.
+            # R1 outputs its chain-of-thought inside <think> tags before the real answer.
+            # We grade the final answer only — not the internal reasoning.
+            import re as _re
+            answer_for_grading = _re.sub(r'<think>.*?</think>', '', answer, flags=_re.DOTALL).strip()
+            if not answer_for_grading:  # If nothing after stripping, use full answer
+                answer_for_grading = answer
+            
             # Grade
             retrieval_hit = EXPECTED_ANSWER.lower() in raw_exhumed_context["text"].lower()
-            judge = EXPECTED_ANSWER.lower() in answer.lower()
+            judge = EXPECTED_ANSWER.lower() in answer_for_grading.lower()
+
             judge_override = False
             
             # If the LLM failed to answer because of instruction-following failure, but the RAG engine successfully retrieved it:
