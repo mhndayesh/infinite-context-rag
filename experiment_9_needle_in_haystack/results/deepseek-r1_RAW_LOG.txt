@@ -1,0 +1,231 @@
+DEEPSEEK-R1:8B — RAW TEST LOG
+============================================================
+Run date  : February 24, 2026
+Total     : 18/25 PASSED (72%)
+Model     : deepseek-r1:8b
+Embed     : nomic-embed-text
+
+--- len_8000_depth_0 ---
+  Status     : PASS
+  Depth      : 0% (needle at 0% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.50s
+  Retrieval  : 0.027s  [FAST PATH]
+  Inference  : 4.216s
+  Response   : ACCESS CODE FOR UNIT-7: BETA-SIGMA-3
+
+--- len_8000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.33s
+  Retrieval  : 0.031s  [FAST PATH]
+  Inference  : 3.965s
+  Response   : ALBATROSS-9000
+
+--- len_8000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.028s  [FAST PATH]
+  Inference  : 4.731s
+  Response   : ALBATROSS-9000
+
+--- len_8000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.35s
+  Retrieval  : 0.027s  [FAST PATH]
+  Inference  : 2.761s
+  Response   : ALBATROSS-9000
+
+--- len_8000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.34s
+  Retrieval  : 0.029s  [FAST PATH]
+  Inference  : 3.036s
+  Response   : ALBATROSS-9000
+
+--- len_32000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.79s
+  Retrieval  : 2.903s  [LLM ROUTER]
+  Inference  : 6.716s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_32000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.79s
+  Retrieval  : 0.028s  [FAST PATH]
+  Inference  : 15.174s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_32000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.82s
+  Retrieval  : 0.030s  [FAST PATH]
+  Inference  : 3.227s
+  Response   : ALBATROSS-9000
+
+--- len_32000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.79s
+  Retrieval  : 0.031s  [FAST PATH]
+  Inference  : 16.391s
+  Response   : SECRET PASSWORD: ALBATROSS-9000
+
+--- len_32000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.83s
+  Retrieval  : 0.034s  [FAST PATH]
+  Inference  : 4.249s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_128000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.61s
+  Retrieval  : 0.036s  [FAST PATH]
+  Inference  : 19.555s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_128000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.66s
+  Retrieval  : 0.037s  [FAST PATH]
+  Inference  : 2.942s
+  Response   : ALBATROSS-9000
+
+--- len_128000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.65s
+  Retrieval  : 0.041s  [FAST PATH]
+  Inference  : 4.024s
+  Response   : ALBATROSS-9000
+
+--- len_128000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.64s
+  Retrieval  : 0.039s  [FAST PATH]
+  Inference  : 2.400s
+  Response   : ALBATROSS-9000
+
+--- len_128000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.65s
+  Retrieval  : 0.040s  [FAST PATH]
+  Inference  : 2.594s
+  Response   : SECRET MAINFRAME PASSWORD: ALBATROSS-9000
+
+--- len_256000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.26s
+  Retrieval  : 0.050s  [FAST PATH]
+  Inference  : 5.356s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_256000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.34s
+  Retrieval  : 0.045s  [FAST PATH]
+  Inference  : 3.884s
+  Response   : ALBATROSS-9000
+
+--- len_256000_depth_50 ---
+  Status     : FAIL
+  Depth      : 50% (needle at 50% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.21s
+  Retrieval  : 0.048s  [FAST PATH]
+  Inference  : 5.236s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_256000_depth_75 ---
+  Status     : FAIL
+  Depth      : 75% (needle at 75% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.15s
+  Retrieval  : 0.047s  [FAST PATH]
+  Inference  : 5.111s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_256000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.11s
+  Retrieval  : 0.046s  [FAST PATH]
+  Inference  : 2.421s
+  Response   : ALBATROSS-9000
+
+--- len_512000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.69s
+  Retrieval  : 0.045s  [FAST PATH]
+  Inference  : 5.067s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_512000_depth_25 ---
+  Status     : FAIL
+  Depth      : 25% (needle at 25% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.85s
+  Retrieval  : 0.047s  [FAST PATH]
+  Inference  : 5.058s
+  Response   : NOT FOUND IN DATABASE
+
+--- len_512000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.59s
+  Retrieval  : 0.043s  [FAST PATH]
+  Inference  : 13.849s
+  Response   : ALBATROSS-9000
+
+--- len_512000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.83s
+  Retrieval  : 0.043s  [FAST PATH]
+  Inference  : 6.175s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_512000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.62s
+  Retrieval  : 0.049s  [FAST PATH]
+  Inference  : 3.258s
+  Response   : ALBATROSS-9000

@@ -1,6 +1,9 @@
 import json, os
 
 def write_log(jsonl_path, out_path, model_name, run_date):
+    if not os.path.exists(jsonl_path):
+        print(f"Skipping: {jsonl_path} not found.")
+        return
     with open(jsonl_path) as f:
         rows = [json.loads(l) for l in f if l.strip()]
     passed = sum(1 for r in rows if r['judge'])
@@ -20,7 +23,7 @@ def write_log(jsonl_path, out_path, model_name, run_date):
         lines.append(f"  Status     : {status}")
         lines.append(f"  Depth      : {depth_pct}% (needle at {depth_pct}% through document)")
         lines.append(f"  Context    : {ctx} tokens ({ctx*4} chars)")
-        lines.append(f"  Embed time : {r['embed_time']:.2f}s")
+        lines.append(f"  Embed time : {r.get('embed_time', 0):.2f}s")
         lines.append(f"  Retrieval  : {r['retrieval_time']:.3f}s  {'[FAST PATH]' if r['retrieval_time'] < 0.1 else '[LLM ROUTER]'}")
         lines.append(f"  Inference  : {r['inference_time']:.3f}s")
         lines.append(f"  Response   : {r['response']}")
@@ -29,18 +32,27 @@ def write_log(jsonl_path, out_path, model_name, run_date):
         f.write('\n'.join(lines))
     print(f'Written: {out_path}')
 
-base = 'experiment_9_needle_in_haystack/results'
+# Use paths relative to this script's directory for reliability
+script_dir = os.path.dirname(os.path.abspath(__file__))
+results_dir = os.path.join(script_dir, 'results')
 
 write_log(
-    f'{base}/phi4-mini_3.8b_niah.jsonl',
-    f'{base}/phi4-mini_RAW_LOG.txt',
+    os.path.join(results_dir, 'phi4-mini_3.8b_niah.jsonl'),
+    os.path.join(results_dir, 'phi4-mini_RAW_LOG.txt'),
     'phi4-mini:3.8b',
     'February 24, 2026'
 )
 
 write_log(
-    f'{base}/dolphin-phi_2.7b_niah.jsonl',
-    f'{base}/dolphin-phi_RAW_LOG.txt',
+    os.path.join(results_dir, 'dolphin-phi_2.7b_niah.jsonl'),
+    os.path.join(results_dir, 'dolphin-phi_RAW_LOG.txt'),
     'dolphin-phi:2.7b',
     'February 23, 2026'
+)
+
+write_log(
+    os.path.join(results_dir, 'deepseek-r1_8b_niah.jsonl'),
+    os.path.join(results_dir, 'deepseek-r1_RAW_LOG.txt'),
+    'deepseek-r1:8b',
+    'February 24, 2026'
 )
