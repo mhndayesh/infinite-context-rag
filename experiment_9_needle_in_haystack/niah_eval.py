@@ -71,6 +71,15 @@ def cleanup_db(db_path):
 
 def create_isolated_memory(test_id, context_text):
     db_path = os.path.join(DB_BASE_DIR, f"db_{test_id}")
+    
+    # --- CRITICAL: Reset ALL memory_engine global state before each test ---
+    # Without this, the ChromaDB client from the previous test persists in-memory,
+    # and the router hits stale needle data from old saved chat turns (0.14s retrieval).
+    memory_engine._client = None
+    memory_engine._collection = None
+    memory_engine.rolling_chat_buffer = []
+    memory_engine.session_chunk_index = 0
+    
     cleanup_db(db_path)
     os.makedirs(db_path, exist_ok=True)
     
@@ -89,7 +98,8 @@ def create_isolated_memory(test_id, context_text):
     chunks = [context_text[i:i+chunk_size] for i in range(0, len(context_text), chunk_size)]
     
     group_id = str(uuid.uuid4())
-    batch_size = 100
+    # Send very small batches to Ollama embedding to prevent massive simultaneous VRAM spikes
+    batch_size = 10
     
     print(f"[{test_id}] Embedding {len(chunks)} chunks...")
     for i in range(0, len(chunks), batch_size):
@@ -109,10 +119,10 @@ def create_isolated_memory(test_id, context_text):
             ids=batch_ids
         )
         
+    # Inject the fresh, clean, isolated client into the memory engine
     memory_engine._client = client
     memory_engine._collection = collection
     memory_engine.DB_PATH = db_path
-    memory_engine.rolling_chat_buffer = [] 
     
     return db_path
 
