@@ -1,0 +1,6 @@
+chromadb==0.4.24
+rank_bm25==0.2.2
+ollama==0.1.6
+tqdm==4.66.1
+matplotlib==3.8.3
+numpy==1.26.4

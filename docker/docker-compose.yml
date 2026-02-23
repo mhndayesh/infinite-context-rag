@@ -1,0 +1,52 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCKER COMPOSE: INFINITE CONTEXT RAG (100% RECALL)
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # --- OLLAMA: Local LLM Backend ---
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- RAG ENGINE: The Hybrid RRF Intelligence ---
+  rag-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-engine
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_healthy
+    volumes:
+      - memory_db:/app/memory_db
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - LLM_MODEL=deepseek-r1:8b
+      - EMBED_MODEL=nomic-embed-text
+      - NUM_CTX=4096
+      - DB_PATH=/app/memory_db
+    stdin_open: true
+    tty: true
+
+volumes:
+  ollama_models:
+  memory_db:
