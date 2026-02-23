@@ -175,7 +175,9 @@ def main():
             print(f"\n[{test_id}] Depth {depth*100}%")
             
             # Inject
+            needle_char_pos = int(len(base_haystack) * depth)
             test_context = insert_needle(base_haystack, NEEDLE, depth)
+            print(f"   Needle injected at char {needle_char_pos:,} / {len(test_context):,} (doc is {len(test_context)//1000}k chars)")
             
             # Embed
             start_embed = time.perf_counter()
@@ -197,15 +199,25 @@ def main():
                 answer, timings = memory_engine.chat_logic(QUESTION)
             
             # Grade
+            retrieval_hit = EXPECTED_ANSWER.lower() in raw_exhumed_context["text"].lower()
             judge = EXPECTED_ANSWER.lower() in answer.lower()
+            judge_override = False
             
             # If the LLM failed to answer because of instruction-following failure, but the RAG engine successfully retrieved it:
-            if not judge and EXPECTED_ANSWER.lower() in raw_exhumed_context["text"].lower():
-                print("   [Judge Override] LLM failed to output exactly, but RAG successfully retrieved the needle into the context window!")
+            if not judge and retrieval_hit:
+                print("   [Judge Override] RAG retrieved the needle but LLM failed to echo it exactly.")
                 judge = True
-            
-            print(f"Answer: {answer[:150]}...")
-            print(f"Result: {'✅ PASS' if judge else '❌ FAIL'} (Retrieval: {timings['retrieval']:.2f}s)")
+                judge_override = True
+
+            # --- DETAILED LOG ---
+            print(f"   [Retrieval Hit] {'YES - needle found in exhumed context' if retrieval_hit else 'NO  - needle NOT in context window'}")
+            raw_preview = raw_exhumed_context['text']
+            ctx_start = raw_preview.find('HISTORICAL DATABASE:')
+            if ctx_start >= 0:
+                raw_preview = raw_preview[ctx_start+20:ctx_start+320].strip()
+            print(f"   [Context Preview] {raw_preview!r}")
+            print(f"   [LLM Answer] {answer[:300]!r}")
+            print(f"   [Grade] {'PASS' if judge else 'FAIL'} | {'Override' if judge_override else 'Direct'} | Retrieval: {timings['retrieval']:.2f}s | Inference: {timings['inference']:.2f}s | Embed: {time_embed:.1f}s")
             
             # Save
             result_item = {
