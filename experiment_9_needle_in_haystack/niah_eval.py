@@ -13,6 +13,22 @@ import chromadb
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'experiment_5_phi4mini_baseline')))
 import memory_engine
 from unittest.mock import patch
+import threading
+
+# --- NIAH BENCHMARK MODE: Disable the background _save() thread ---
+# After each query, memory_engine spawns _save() which calls classify_memory() + extract_entities()
+# (2 LLM calls) + an embed call. These 3 calls take 110+ seconds and block Ollama, freezing
+# the next test's embedding batch. Since NIAH doesn't need persistent memory between queries,
+# we patch threading.Thread to be a no-op for saves during benchmarking.
+_original_thread_start = threading.Thread.start
+def _noop_save_thread(self):
+    # Only suppress threads spawned by niah (the _save daemon threads).
+    # We detect them by checking if the target function name is '_save'.
+    if self._target and getattr(self._target, '__name__', '') == '_save':
+        return  # Do nothing - skip the save
+    _original_thread_start(self)
+threading.Thread.start = _noop_save_thread
+
 
 # Silence noisy libraries
 import warnings
