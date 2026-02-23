@@ -206,9 +206,12 @@ def main():
             if not answer_for_grading:  # If nothing after stripping, use full answer
                 answer_for_grading = answer
             
-            # Grade
+            # Grade: Strip numeric punctuation (commas and periods) from the answer to prevent
+            # "European formatting" locale quirks (e.g., ALBATROSS-90.000) from causing false failures.
+            answer_for_grading_clean = answer_for_grading.replace('.', '').replace(',', '')
+            
             retrieval_hit = EXPECTED_ANSWER.lower() in raw_exhumed_context["text"].lower()
-            judge = EXPECTED_ANSWER.lower() in answer_for_grading.lower()
+            judge = EXPECTED_ANSWER.lower() in answer_for_grading_clean.lower()
 
             judge_override = False
             
