@@ -33,7 +33,7 @@ except ImportError:
     pynvml = None
 
 # --- CONFIGURATION ---
-LLM_MODEL = "qwen3:8b"
+LLM_MODEL = "dolphin-phi:2.7b"
 EMBED_MODEL = "nomic-embed-text"
 DB_PATH = "./exp5_memory_db"
 
