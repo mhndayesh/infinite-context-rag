@@ -1,0 +1,231 @@
+PHI4-MINI:3.8B — RAW TEST LOG
+============================================================
+Run date  : February 24, 2026
+Total     : 18/25 PASSED (72%)
+Model     : phi4-mini:3.8b
+Embed     : nomic-embed-text
+
+--- len_8000_depth_0 ---
+  Status     : PASS
+  Depth      : 0% (needle at 0% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.42s
+  Retrieval  : 0.035s  [FAST PATH]
+  Inference  : 0.332s
+  Response   : PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_8000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.027s  [FAST PATH]
+  Inference  : 0.364s
+  Response   : SECRET PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_8000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.027s  [FAST PATH]
+  Inference  : 0.348s
+  Response   : PASSWORD TO UNLOCK CORE MAINFRAME: ALBATROSS-9000
+
+--- len_8000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.029s  [FAST PATH]
+  Inference  : 0.345s
+  Response   : ACCESS CODE FOR CORE MAINFRAME: ALBATROSS-9000
+
+--- len_8000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 8000 tokens (32000 chars)
+  Embed time : 2.32s
+  Retrieval  : 0.030s  [FAST PATH]
+  Inference  : 0.361s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_32000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.78s
+  Retrieval  : 0.215s  [LLM ROUTER]
+  Inference  : 0.375s
+  Response   : PASSWORD FOR UNIT-7 MAINFRAME: L33T-C0DE!2023
+
+--- len_32000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.78s
+  Retrieval  : 0.031s  [FAST PATH]
+  Inference  : 0.359s
+  Response   : PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_32000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.79s
+  Retrieval  : 0.029s  [FAST PATH]
+  Inference  : 0.359s
+  Response   : PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_32000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.80s
+  Retrieval  : 0.030s  [FAST PATH]
+  Inference  : 0.370s
+  Response   : PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_32000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 32000 tokens (128000 chars)
+  Embed time : 2.80s
+  Retrieval  : 0.030s  [FAST PATH]
+  Inference  : 0.324s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_128000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.69s
+  Retrieval  : 0.041s  [FAST PATH]
+  Inference  : 0.369s
+  Response   : PASSWORD FOR CORE MAINFRAME: HYPERION-DELTA-ZETA-9
+
+--- len_128000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.64s
+  Retrieval  : 0.036s  [FAST PATH]
+  Inference  : 0.375s
+  Response   : PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_128000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.64s
+  Retrieval  : 0.040s  [FAST PATH]
+  Inference  : 0.358s
+  Response   : SECRET PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_128000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.69s
+  Retrieval  : 0.036s  [FAST PATH]
+  Inference  : 0.344s
+  Response   : SECRET PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_128000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 128000 tokens (512000 chars)
+  Embed time : 4.62s
+  Retrieval  : 0.035s  [FAST PATH]
+  Inference  : 0.316s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_256000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.16s
+  Retrieval  : 0.045s  [FAST PATH]
+  Inference  : 0.341s
+  Response   : PASSWORD FOR CORE MAINFRAME: HYPERION-DELTA-ZETA-9
+
+--- len_256000_depth_25 ---
+  Status     : PASS
+  Depth      : 25% (needle at 25% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.46s
+  Retrieval  : 0.046s  [FAST PATH]
+  Inference  : 0.373s
+  Response   : SECRET PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_256000_depth_50 ---
+  Status     : FAIL
+  Depth      : 50% (needle at 50% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.34s
+  Retrieval  : 0.221s  [LLM ROUTER]
+  Inference  : 0.348s
+  Response   : PASSWORD FOR UNIT-7 MAINFRAME: HYPERION-ZEPHYR-X9
+
+--- len_256000_depth_75 ---
+  Status     : FAIL
+  Depth      : 75% (needle at 75% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.38s
+  Retrieval  : 0.225s  [LLM ROUTER]
+  Inference  : 0.349s
+  Response   : PASSWORD FOR UNIT-7 MAINFRAME: HYPERION-ZEPHYR-X9
+
+--- len_256000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 256000 tokens (1024000 chars)
+  Embed time : 7.37s
+  Retrieval  : 0.048s  [FAST PATH]
+  Inference  : 0.303s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
+
+--- len_512000_depth_0 ---
+  Status     : FAIL
+  Depth      : 0% (needle at 0% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 13.31s
+  Retrieval  : 0.047s  [FAST PATH]
+  Inference  : 0.368s
+  Response   : PASSWORD FOR CORE MAINFRAME: HYPERION-DELTA-ZETA-9
+
+--- len_512000_depth_25 ---
+  Status     : FAIL
+  Depth      : 25% (needle at 25% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.85s
+  Retrieval  : 0.226s  [LLM ROUTER]
+  Inference  : 0.390s
+  Response   : PASSWORD FOR CORE MAINFRAME BENCHMARK TEST: HYPERION-DELTA-ZETA-9
+
+--- len_512000_depth_50 ---
+  Status     : PASS
+  Depth      : 50% (needle at 50% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.98s
+  Retrieval  : 0.051s  [FAST PATH]
+  Inference  : 0.409s
+  Response   : SECRET PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_512000_depth_75 ---
+  Status     : PASS
+  Depth      : 75% (needle at 75% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 13.32s
+  Retrieval  : 0.046s  [FAST PATH]
+  Inference  : 0.350s
+  Response   : SECRET PASSWORD TO UNLOCK THE CORE MAINFRAME: ALBATROSS-9000
+
+--- len_512000_depth_100 ---
+  Status     : PASS
+  Depth      : 100% (needle at 100% through document)
+  Context    : 512000 tokens (2048000 chars)
+  Embed time : 12.85s
+  Retrieval  : 0.046s  [FAST PATH]
+  Inference  : 0.309s
+  Response   : The secret magical password to unlock the core mainframe is ALBATROSS-9000.
