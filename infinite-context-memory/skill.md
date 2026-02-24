@@ -1,6 +1,6 @@
 ---
-# 🦞 ClawHub Perfect Schema
 name: infinite-context-memory
+version: 1.0.0
 description: High-precision RAG Memory. Find 100% accurate facts across 512k+ tokens using parallel extraction.
 homepage: https://github.com/mhndayesh/infinite-context-rag
 user-invocable: true
