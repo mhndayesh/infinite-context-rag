@@ -1,0 +1,7 @@
+{
+  "stage1_random_needle": true,
+  "stage2_db_placement": true,
+  "stage3_retrieval_proof": false,
+  "stage4_negative_control": true,
+  "stage5_depth_variation": false
+}
