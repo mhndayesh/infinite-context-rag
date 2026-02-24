@@ -1,0 +1,20 @@
+# VLLM Installation Correction
+
+The user tried to run a `uv`-specific command using `pip`. We will switch to using `uv` which is already installed and more efficient for managing multiple indices.
+
+## Proposed Changes
+
+### [Component Name] VLLM Installation
+We will run the installation command using `uv` instead of `pip`.
+
+#### [EXECUTE] Run Installation
+```bash
+uv pip install vllm --extra-index-url https://wheels.vllm.ai/0.15.1/cu130 --extra-index-url https://download.pytorch.org/whl/cu130 --index-strategy unsafe-best-match
+```
+*Note: Using `uv pip install` keeps it compatible with the current virtual environment.*
+
+## Verification Plan
+
+### Automated Tests
+- Run `python -c "import vllm; print(vllm.__version__)"` to verify the version is 0.15.1.
+- Run `python -c "import torch; print(torch.cuda.is_available())"` to ensure CUDA is still functional.

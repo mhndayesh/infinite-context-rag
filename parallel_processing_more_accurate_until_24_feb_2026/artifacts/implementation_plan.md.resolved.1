@@ -1,0 +1,23 @@
+# Pivot to LM Studio Integration
+
+The user has decided to use LM Studio as a local LLM backend instead of vLLM due to Windows/CUDA 13.0 compatibility issues.
+
+## Proposed Changes
+
+### [Component Name] Backend Configuration
+We will verify and configure the connection to LM Studio's OpenAI-compatible API.
+
+#### [VERIFY] LM Studio Connectivity
+We will check if LM Studio is running and responding on its default local endpoint.
+
+#### [MODIFY] Script Configuration
+Ensure that `memory_engine.py` and other relevant scripts are pointing to the LM Studio API (typically `http://localhost:1234/v1`).
+
+## Verification Plan
+
+### Automated Tests
+- Run a connectivity check: `curl http://localhost:1234/v1/models`
+- Run a simple completion test using the `openai` Python library pointing to the local host.
+
+### Manual Verification
+- User ensures LM Studio is running with a loaded model and the local server started.

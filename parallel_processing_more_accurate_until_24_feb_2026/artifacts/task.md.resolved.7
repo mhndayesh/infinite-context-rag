@@ -1,0 +1,14 @@
+# VLLM Installation Task
+
+- [x] Pivot from vLLM to LM Studio (vLLM blocked on Windows/cu130)
+- [x] Configure LM Studio Integration
+    - [x] Update [requirements.txt](file:///c:/new-ai,arch/plug_and_play/requirements.txt) if needed
+    - [x] Verify LM Studio API endpoint (usually http://localhost:1234/v1)
+    - [x] Test connectivity with a simple script
+- [x] Verify [memory_engine.py](file:///c:/new-ai,arch/plug_and_play/memory_engine.py) compatibility with LM Studio
+- [ ] Run LM Studio Benchmarks [/]
+    - [x] Refactor [phase16_benchmark.py](file:///c:/new-ai,arch/experiment_11_phase16_vllm/benchmarks/phase16_benchmark.py) for LM Studio/OpenAI API
+    - [x] Execute benchmark script (Failed: Reasoning tags broke keyword extraction)
+    - [/] Debug and Fix: Strip `<think>` tags and refine prompts
+    - [ ] Re-execute benchmark script
+    - [ ] Analyze and report results

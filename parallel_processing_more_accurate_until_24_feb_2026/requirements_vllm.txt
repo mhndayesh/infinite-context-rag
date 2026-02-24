@@ -1,0 +1,9 @@
+chromadb==0.4.24
+rank_bm25==0.2.2
+aiohttp==3.9.3
+openai>=1.12.0
+tqdm==4.66.1
+matplotlib==3.8.3
+numpy==1.26.4
+# Note: vLLM itself is installed on the server, not the client.
+# The RAG engine connects to vLLM via the OpenAI-compatible HTTP API.

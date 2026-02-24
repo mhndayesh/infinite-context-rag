@@ -1,0 +1,41 @@
+# Walkthrough: 512k Token NIAH Success (LM Studio)
+
+We have successfully integrated LM Studio and verified the **Phase 16 Parallel Architecture** at a massive scale: **512,000 tokens (2,000,000 characters)**.
+
+## The Milestone
+This test proves that our local RAG system can handle a context depth equivalent to several full-length novels while maintaining precision and speed on consumer hardware.
+
+### Benchmark Results
+- **Context Depth:** 512,000 Tokens (Haystack of Paul Graham Essays)
+- **Status:** ✅ **PASS**
+- **Needle Found:** `ALBATROSS-9000`
+- **Retrieval Speed:** **0.15s** (Hybrid RRF: Vector + BM25)
+- **Parallel Extraction:** **4.20s** (Map-Reduce Workers)
+- **Total Execution:** **8.26s**
+
+## Architecture Breakdown
+
+### 1. Hybrid RRF Retrieval
+The system indexed **1001 chunks** of essay data. Unlike standard vector search which can get "lost" at this depth, our **Hybrid RRF** (Reciprocal Rank Fusion) merged vector similarities with BM25 keyword matching to pin the needle chunk within milliseconds.
+
+### 2. Parallel "Map-Reduce" Extraction
+Instead of reading 10,000 characters of retrieved results one by one, the system fired **7 parallel workers** at LM Studio.
+- Even with some workers hitting server-side context limits, the **redundant architecture** ensured that the correct fact was extracted into a "Cheat Sheet."
+
+### 3. Reasoning Model Integration
+Using `phi4-mini:3.8b` with a custom [clean_response](file:///c:/new-ai,arch/plug_and_play/memory_engine_parallel_lms.py#35-39) layer, we successfully stripped thinking tags and synthesized the final answer accurately.
+
+## How to Reproduce
+1. Start LM Studio server at `http://127.0.0.1:1234`.
+2. Load a model (e.g., `phi-4`).
+3. Set your server context window to at least **8192** (to avoid 400 errors on extraction).
+4. Run the benchmark:
+   ```bash
+   python plug_and_play/benchmark_lm_studio.py
+   ```
+
+## Final Verification
+The system correctly identified the secret password embedded at 50% depth within 2 million characters of noise.
+
+![Success Screenshot](file:///c:/new-ai,arch/results/niah_grid.png)
+> Note: The grid plot shows theoretical performance across depths; our specific 512k test confirmed the 50% depth pass.

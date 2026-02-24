@@ -1,0 +1,7 @@
+# VLLM Installation Task
+
+- [ ] Resolve `pip` installation error [/]
+    - [ ] Check if `uv` is installed
+    - [ ] Attempt installation without `--index-strategy` if `uv` is missing
+    - [ ] Verify `vllm` upgrade to 0.15.1
+- [ ] Verify CUDA 13.0 compatibility with installed `torch` and `vllm`

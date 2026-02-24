@@ -57,9 +57,9 @@ import re
 # │  IDLE_TIMEOUT_SECONDS — Seconds before starting a new chat session block    │
 # │                                                                            │
 # └────────────────────────────────────────────────────────────────────────────┘
-OLLAMA_URL           = os.getenv("OLLAMA_URL", "http://localhost:11434")
+LM_STUDIO_URL        = os.getenv("LM_STUDIO_URL", "http://127.0.0.1:1234/v1")
 LLM_MODEL            = os.getenv("LLM_MODEL", "phi4-mini:3.8b")
-EMBED_MODEL          = os.getenv("EMBED_MODEL", "nomic-embed-text")
+EMBED_MODEL          = os.getenv("EMBED_MODEL", "text-embedding-nomic-embed-text-v1.5@f32")
 DB_PATH              = os.getenv("DB_PATH", "./memory_db")
 NUM_CTX              = int(os.getenv("NUM_CTX", "4096"))
 IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "300"))
@@ -72,9 +72,12 @@ IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "300"))
 warnings.filterwarnings("ignore")
 logging.getLogger('chromadb').setLevel(logging.ERROR)
 
-import ollama
+from openai import OpenAI
 import chromadb
 from chromadb.utils import embedding_functions
+
+# Initialize OpenAI client for LM Studio
+client = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
 
 # Serializes LLM calls to prevent Ollama server crashes under concurrent load.
 # Ollama's local server can't handle two simultaneous requests safely.
@@ -104,9 +107,10 @@ def get_collection():
     """
     global _client, _collection
     if _collection is None:
-        emb_fn = embedding_functions.OllamaEmbeddingFunction(
-            model_name=EMBED_MODEL,
-            url=f"{OLLAMA_URL}/api/embeddings",
+        emb_fn = embedding_functions.OpenAIEmbeddingFunction(
+            api_key="lm-studio",
+            api_base=LM_STUDIO_URL,
+            model_name=EMBED_MODEL
         )
         _client = chromadb.PersistentClient(path=DB_PATH)
         _collection = _client.get_or_create_collection(
@@ -134,6 +138,12 @@ def check_vram():
             pass
 
 
+def clean_response(text):
+    """Strips <think> tags and other common junk from model responses."""
+    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL)
+    return text.strip()
+
+
 def classify_memory(text):
     """
     STAGE 0A: Memory Classifier
@@ -157,13 +167,14 @@ TEXT:
 """
     try:
         with inference_lock:
-            response = ollama.chat(
+            response = client.chat.completions.create(
                 model=LLM_MODEL,
                 messages=[{'role': 'user', 'content': prompt}],
-                format='json',
-                options={"num_ctx": NUM_CTX, "temperature": 0.1}
+                response_format={'type': 'json_object'},
+                temperature=0.1
             )
-        result_json = json.loads(response['message']['content'])
+        result_json_raw = clean_response(response.choices[0].message.content)
+        result_json = json.loads(result_json_raw)
         ans = result_json.get('category', '').strip().upper()
 
         # Keyword override: if user explicitly asks to memorize, always FACT
@@ -185,7 +196,7 @@ def extract_entities(text):
     """
     try:
         with inference_lock:
-            response = ollama.chat(
+            response = client.chat.completions.create(
                 model=LLM_MODEL,
                 messages=[
                     {'role': 'system', 'content': 'You extract entities only. Output a comma-separated list. No sentences. No duplicates.'},
@@ -195,9 +206,9 @@ Output ONLY a comma-separated list. Do NOT write sentences.
 TEXT: "{text[:2000]}"
 ENTITIES:"""}
                 ],
-                options={"num_ctx": NUM_CTX, "temperature": 0.0}
+                temperature=0.0
             )
-        entities = response['message']['content'].strip()
+        entities = clean_response(response.choices[0].message.content)
         # Deduplicate to prevent repetition loops
         unique = list(dict.fromkeys([e.strip() for e in entities.split(',') if e.strip()]))
         return ', '.join(unique)[:300]  # Cap to prevent metadata bloat
@@ -215,19 +226,15 @@ def extract_keywords(user_query):
     """
     try:
         with inference_lock:
-            response = ollama.chat(
+            response = client.chat.completions.create(
                 model=LLM_MODEL,
                 messages=[
-                    {'role': 'system', 'content': 'You extract keywords only. No formatting. No sentences.'},
-                    {'role': 'user', 'content': f"""Extract the core nouns, entities, themes, and specific details from this question.
-Output ONLY a comma-separated list of keywords. Do NOT answer the question.
-
-QUESTION: "{user_query}"
-KEYWORDS:"""}
+                    {'role': 'system', 'content': 'You are a keyword extractor. Output ONLY a comma-separated list of nouns and entities. NO thinking, NO sentences, NO explanations.'},
+                    {'role': 'user', 'content': f"""Extract core search keywords for: "{user_query}"\nKEYWORDS:"""}
                 ],
-                options={"num_ctx": NUM_CTX, "temperature": 0.0}
+                temperature=0.0
             )
-        keywords = response['message']['content'].strip()
+        keywords = clean_response(response.choices[0].message.content)
         unique_kws = list(dict.fromkeys([k.strip() for k in keywords.split(',') if k.strip()]))
         result = ', '.join(unique_kws)[:500]  # Hard cap at 500 chars (embedding limit)
         print(f"\n   [Expander] '{user_query[:60]}' -> '{result[:60]}'")
@@ -248,7 +255,7 @@ def paged_context_read(pages, user_query):
     for page_num, page_text in enumerate(pages):
         try:
             with inference_lock:
-                response = ollama.chat(
+                response = client.chat.completions.create(
                     model=LLM_MODEL,
                     messages=[
                         {'role': 'system', 'content': 'You are a fact extractor. Extract ONLY facts relevant to the question. Output a concise bulleted list. If nothing is relevant, output "NOTHING RELEVANT".'},
@@ -260,9 +267,9 @@ def paged_context_read(pages, user_query):
 
 Relevant facts:"""}
                     ],
-                    options={"num_ctx": NUM_CTX, "temperature": 0.0}
+                    temperature=0.0
                 )
-            page_findings = response['message']['content'].strip()
+            page_findings = clean_response(response.choices[0].message.content)
             if "NOTHING RELEVANT" not in page_findings.upper():
                 findings.append(page_findings)
                 print(f"   [Paged Reader] Page {page_num + 1}: Found relevant facts.")
@@ -372,15 +379,15 @@ Output ONLY the integer index (0, 1, or 2). Nothing else.
 """
         try:
             with inference_lock:
-                sel_response = ollama.chat(
+                sel_response = client.chat.completions.create(
                     model=LLM_MODEL,
                     messages=[
                         {'role': 'system', 'content': 'Output only an integer.'},
                         {'role': 'user', 'content': selection_prompt}
                     ],
-                    options={"num_ctx": NUM_CTX, "temperature": 0.0}
+                    temperature=0.0
                 )
-            match = re.search(r'\d+', sel_response['message']['content'].strip())
+            match = re.search(r'\d+', clean_response(sel_response.choices[0].message.content))
             if match:
                 selected_idx = min(int(match.group()), len(eval_hits) - 1)
                 target_group_id = meta_hits[selected_idx].get("group_id")
@@ -492,12 +499,12 @@ HISTORICAL DATABASE:
 
     start_inference = time.perf_counter()
     with inference_lock:
-        response = ollama.chat(
+        response = client.chat.completions.create(
             model=LLM_MODEL,
             messages=messages,
-            options={"num_ctx": NUM_CTX, "temperature": 0.2}
+            temperature=0.2
         )
-    ai_answer = response['message']['content']
+    ai_answer = clean_response(response.choices[0].message.content)
     end_inference = time.perf_counter()
     inference_time = end_inference - start_inference
 

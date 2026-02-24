@@ -1,0 +1,25 @@
+# Latest Architecture Benchmark (Phase 16) for LM Studio
+
+We will use the high-performance parallel extraction engine (Phase 16) adapted for LM Studio to run the latest benchmark tests.
+
+## Proposed Changes
+
+### [Component Name] Engine Update
+We will create a new parallel engine file specifically for LM Studio.
+
+#### [NEW] [memory_engine_parallel_lms.py](file:///c:/new-ai,arch/plug_and_play/memory_engine_parallel_lms.py)
+- Based on [memory_engine_parallel.py](file:///c:/new-ai,arch/experiment_11_phase16_vllm/src/memory_engine_parallel.py).
+- Includes [clean_response](file:///c:/new-ai,arch/plug_and_play/memory_engine.py#141-145) to strip `<think>` tags.
+- Configured for `http://127.0.0.1:1234/v1`.
+- Uses hybrid BM25 + Vector retrieval.
+
+### [Component Name] Benchmark Update
+We will update the benchmark script to use this new engine.
+
+#### [NEW] [benchmark_latest.py](file:///c:/new-ai,arch/plug_and_play/benchmark_latest.py)
+- Needle-in-a-Haystack test using the parallel architecture.
+
+## Verification Plan
+
+### Automated Tests
+- Run `python plug_and_play/benchmark_latest.py` and verify it passes with the secret password.

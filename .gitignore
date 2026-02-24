@@ -32,3 +32,18 @@ experiment_7_phi4mini_ctrlf/evaluation_integrity.log
 
 plug_and_play/memory_db/
 
+
+vllm_env/
+temp_*/
+*.log
+__pycache__/
+memory_db/
+results/*.png
+
+vllm_env/
+temp_*/
+*.log
+__pycache__/
+memory_db/
+venv/
+results/*.png

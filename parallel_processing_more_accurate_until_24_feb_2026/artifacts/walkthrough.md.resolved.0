@@ -1,0 +1,35 @@
+# Walkthrough: LM Studio Integration
+
+We have successfully transitioned the backend from vLLM to LM Studio to ensure compatibility with Windows and CUDA 13.0.
+
+## Changes Made
+
+### Backend Pivot: [memory_engine.py](file:///c:/new-ai,arch/plug_and_play/memory_engine.py)
+- Switched from `ollama` library to `openai` library for LM Studio compatibility.
+- Updated `LM_STUDIO_URL` to `http://127.0.0.1:1234/v1`.
+- Configured `LLM_MODEL` and `EMBED_MODEL` to match standard LM Studio naming conventions.
+- Refactored all chat and embedding calls to use the `client.chat.completions.create` and `OpenAIEmbeddingFunction`.
+
+## Verification Results
+
+### API Connectivity
+I verified that the LM Studio API is reachable at the local address:
+```bash
+curl -s http://127.0.0.1:1234/v1/models
+```
+
+### Script Import
+The refactored script passes initial syntax and import checks:
+```python
+from plug_and_play.memory_engine import chat_logic
+print("Memory Engine ready for LM Studio")
+```
+
+## How to Run
+1. Open **LM Studio**.
+2. Load your desired model (e.g., `phi-4`).
+3. Start the **Local Server** in LM Studio (ensure it's on port `1234`).
+4. Run the memory engine:
+   ```bash
+   python plug_and_play/memory_engine.py
+   ```

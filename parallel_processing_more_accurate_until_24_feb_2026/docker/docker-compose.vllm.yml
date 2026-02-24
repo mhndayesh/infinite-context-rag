@@ -1,0 +1,99 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE XVI: vLLM Full Upgrade — Docker Compose
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# SERVICES:
+#   1. vllm          — High-throughput LLM server with continuous batching
+#   2. ollama        — Lightweight embedding server (nomic-embed-text only)
+#   3. rag-engine    — The Infinite Context RAG engine (Phase XVI version)
+#
+# QUICK START:
+#   docker compose up
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── vLLM: High-Throughput Inference Engine ──────────────────────────────────
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: vllm
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - hf_models:/root/.cache/huggingface   # Cache model weights
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN:-""}
+    command: >
+      Qwen/Qwen2.5-1.5B-Instruct
+      --host 0.0.0.0
+      --port 8000
+      --dtype half
+      --gpu-memory-utilization 0.60
+      --max-model-len 4096
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s   # vLLM takes time to load the model
+
+  # ── Ollama: Embeddings Only ──────────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-embed
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── RAG Engine: Phase XVI ────────────────────────────────────────────────────
+  rag-engine:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: rag-engine-vllm
+    restart: unless-stopped
+    depends_on:
+      vllm:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    volumes:
+      - memory_db:/app/memory_db
+    environment:
+      - VLLM_URL=http://vllm:8000/v1         # OpenAI-compatible vLLM endpoint
+      - OLLAMA_URL=http://ollama-embed:11434
+      - LLM_MODEL=Qwen/Qwen2.5-1.5B-Instruct
+      - EMBED_MODEL=nomic-embed-text
+      - DB_PATH=/app/memory_db
+      - ASYNC_EXTRACTION_ENABLED=true        # TRUE with vLLM — real parallel batching
+      - EXTRACTION_PAGE_SIZE=1500
+    stdin_open: true
+    tty: true
+
+volumes:
+  hf_models:
+  ollama_models:
+  memory_db:
