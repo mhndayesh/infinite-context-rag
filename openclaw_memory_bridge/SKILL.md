@@ -18,6 +18,9 @@ metadata:
 
 # Infinite Context Memory 🦞
 
+> **Core Foundational Work:** [Infinite Context RAG Repository](https://github.com/mhndayesh/infinite-context-rag)  
+> *This skill is a standalone interface for the Phase 16 Victory Architecture.*
+
 This skill provides the agent with a high-precision parallel retrieval engine. It is designed to find "needles in haystacks" with 100% recall accuracy.
 
 ## 🤖 AUTONOMOUS BEHAVIOR

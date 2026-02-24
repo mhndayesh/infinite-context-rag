@@ -4,6 +4,13 @@ This folder contains a standalone integration that brings the Phase 16 **100% Ac
 
 ## 📦 How to Install
 
+### Method A: Direct Install from URL (Recommended)
+Paste this link into your OpenClaw chat:
+`https://github.com/mhndayesh/infinite-context-rag/tree/main/openclaw_memory_bridge`
+
+*OpenClaw will automatically download the skill folder into your workspace.*
+
+### Method B: Manual Install
 1. **Move this Folder:**
    Copy the `openclaw_memory_bridge` folder into your OpenClaw skills directory:
    `~/.openclaw/workspace/skills/openclaw_memory_bridge`
