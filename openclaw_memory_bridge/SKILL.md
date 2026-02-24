@@ -1,12 +1,27 @@
 ---
 name: infinite-context-memory
-description: 100% Accuracy RAG Memory for 512k tokens. Use when you need to find specific facts, codes, or technical details in large historical datasets.
+description: High-precision RAG Memory. Use when you need to find specific facts, codes, or technical details in large historical datasets.
 command: /memory
+user-invocable: true
+disable-model-invocation: false
+metadata:
+  openclaw:
+    requires:
+      bins: 
+        - python
+        - curl
+    dependencies:
+      - fastapi
+      - uvicorn
+      - chromadb
 ---
 
 # Infinite Context Memory 🦞
 
-This skill provides the agent with a high-precision parallel retrieval engine. It is designed to find "needles in haystacks" of up to 512,000 tokens with 100% recall accuracy.
+This skill provides the agent with a high-precision parallel retrieval engine. It is designed to find "needles in haystacks" with 100% recall accuracy.
+
+## 🤖 AUTONOMOUS BEHAVIOR
+**Triggers:** Use this skill automatically if the user asks for historical data, project-specific details, or technical facts that are not present in the current conversation window. Do not admit ignorance until you have called `recall_facts`.
 
 ## 🛠 Tools
 
