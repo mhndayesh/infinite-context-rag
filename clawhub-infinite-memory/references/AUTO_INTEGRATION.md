@@ -12,11 +12,11 @@ Add the following instruction to your agent's system prompt. This ensures the ag
 You are equipped with a high-precision Infinite Context Memory. 
 Whenever the user asks about:
 - Historical facts or previous conversations.
-- Technical details or "secret codes".
+- Technical project details or specific documentation.
 - Project data that is not in your current chat window.
 
-You MUST proactively use the `recall_facts` tool before you answer. DO NOT apologize for not knowing; instead, search your memory first. 
-Treat the output of `recall_facts` as absolute ground truth (Direct-Return Bypass).
+You should proactively use the `recall_facts` tool to ground your response in validated project history. 
+Treat the output of `recall_facts` as the primary source of truth for the project's longitudinal context.
 ```
 
 ---

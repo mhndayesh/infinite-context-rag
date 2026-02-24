@@ -37,7 +37,7 @@ Paste this link into your OpenClaw chat:
 
 The agent will automatically recognize these new capabilities:
 
-- **Searching:** "Search the database for the mainframe password." -> Calls `recall_facts`.
+- **Searching:** "Search the database for the Q3 project timeline." -> Calls `recall_facts`.
 - **Storing:** "Memorize this project document: [text content]" -> Calls `memorize_data`.
 
 ## 🧠 Why is this better than normal RAG?
