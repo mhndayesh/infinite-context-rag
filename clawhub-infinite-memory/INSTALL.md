@@ -26,7 +26,7 @@ Paste this link into your OpenClaw chat:
    ```bash
    python memory_service.py
    ```
-   *Note: Keep this terminal open while you use OpenClaw.*
+   *Note: The service is hardened and binds to 127.0.0.1 (Localhost only) and requires an X-API-Key for authentication (handled automatically by the scripts).*
 
 4. **Verify LM Studio:**
    Ensure LM Studio is running on `http://localhost:1234` with at least **16 parallel slots** enabled.

@@ -25,8 +25,8 @@ High-precision RAG engine for deep context retrieval (Phase 16 Architecture).
 ## ⚙️ Setup Instructions
 To use this memory, follow these steps:
 1.  **Install Dependencies:** Run `pip install -r requirements.txt`.
-2.  **Start Sidecar:** Run `python memory_service.py` in a terminal and keep it running.
-3.  **LM Studio:** Ensure LM Studio is running on `localhost:1234` with 16 parallel slots.
+2.  **Start Sidecar:** Run `python memory_service.py`. The service binds to `127.0.0.1` for maximum security.
+3.  **LM Studio:** Ensure LM Studio is running on `localhost:1234`.
 
 ## 🗄️ Database Location
 - The underlying high-precision database is stored in: `infinite-context-memory/memory_db/`

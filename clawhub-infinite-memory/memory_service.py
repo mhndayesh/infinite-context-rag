@@ -1,8 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header, Depends
 from pydantic import BaseModel
 import uvicorn
 import os
 import sys
+
+# security: Simple API Key for local isolation
+API_KEY = "oc-memory-secret-123"
 
 # Add nested engine to path
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'engine'))
@@ -14,6 +17,10 @@ except ImportError as e:
 
 app = FastAPI(title="OpenClaw Memory Sidecar")
 
+async def verify_token(x_api_key: str = Header(None)):
+    if x_api_key != API_KEY:
+        raise HTTPException(status_code=403, detail="Invalid API Key")
+
 class SearchRequest(BaseModel):
     query: str
 
@@ -21,7 +28,7 @@ class IngestRequest(BaseModel):
     text: str
     filename: str = "openclaw_ingest.txt"
 
-@app.post("/search")
+@app.post("/search", dependencies=[Depends(verify_token)])
 async def search_memory(request: SearchRequest):
     """Bridge to the Phase 16 High-Precision Engine"""
     try:
@@ -34,7 +41,7 @@ async def search_memory(request: SearchRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/ingest")
+@app.post("/ingest", dependencies=[Depends(verify_token)])
 async def ingest_memory(request: IngestRequest):
     """Direct ingestion into the Phase 16 ChromaDB"""
     try:
@@ -56,8 +63,8 @@ async def ingest_memory(request: IngestRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    print("\n🦞 OPENCLAW MEMORY BRIDGE RUNNING")
+    print("\n[SECURE] 🦞 OPENCLAW MEMORY BRIDGE")
     print("════════════════════════════════════")
-    print("API: http://localhost:8000")
-    print("Engine: Phase 16 Parallel (100% Accuracy)")
+    print("API: http://127.0.0.1:8000 (Localhost Only)")
+    print(f"AUTH: X-API-Key required")
     uvicorn.run(app, host="127.0.0.1", port=8000)

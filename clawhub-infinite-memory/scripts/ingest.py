@@ -3,12 +3,15 @@ import requests
 import json
 
 def ingest(filename, text):
-    url = "http://localhost:8000/ingest"
+    url = "http://127.0.0.1:8000/ingest"
+    headers = {"X-API-Key": "oc-memory-secret-123"}
     try:
-        response = requests.post(url, json={"filename": filename, "text": text})
+        response = requests.post(url, json={"filename": filename, "text": text}, headers=headers)
         if response.status_code == 200:
             data = response.json()
             print(f"Success: Stored {data['chunks_added']} chunks to memory.")
+        elif response.status_code == 403:
+            print("Error: Authentication failed. Invalid API Key.")
         else:
             print(f"Error: {response.text}")
     except Exception as e:
