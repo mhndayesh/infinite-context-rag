@@ -13,14 +13,14 @@ The architecture has been upgraded to a **High-Precision Parallel Engine**.
 - **Speed:** ~7.5s total pipeline (3x speedup via 16 parallel extraction slots).
 - **Hardened:** Zero safety refusals via the novel **Direct-Return Bypass**.
 
-## 🦞 OpenClaw: One-Click Instant Install
+## 🦞 OpenClaw / ClawHub: One-Click Instant Install
 
-You can now install this 100% Accuracy Memory Engine directly into your OpenClaw agent. 
+You can now install this 100% Accuracy Memory Engine directly into your OpenClaw agent or publish it to **ClawHub.ai**. 
 
 **Paste this link into your OpenClaw chat:**
-> `https://github.com/mhndayesh/infinite-context-rag/tree/main/openclaw_memory_bridge`
+> `https://github.com/mhndayesh/infinite-context-rag/tree/main/infinite-context-memory`
 
-*Your agent will automatically download the skill, setup the tools, and gain Infinite Context.*
+*Your agent will automatically download the "Perfect Schema" skill, setup the tools, and gain Infinite Context.*
 
 ---
 
