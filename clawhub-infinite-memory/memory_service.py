@@ -60,4 +60,4 @@ if __name__ == "__main__":
     print("════════════════════════════════════")
     print("API: http://localhost:8000")
     print("Engine: Phase 16 Parallel (100% Accuracy)")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
