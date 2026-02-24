@@ -2,9 +2,7 @@
 name: infinite-context-memory
 version: 1.0.0
 description: High-precision RAG Memory. Find 100% accurate facts across 512k+ tokens using parallel extraction.
-homepage: https://github.com/mhndayesh/infinite-context-rag
-user-invocable: true
-disable-model-invocation: false
+emoji: 🦞
 metadata:
   clawdbot:
     requires:
@@ -12,12 +10,12 @@ metadata:
         - python
         - curl
     files:
-      - scripts/recall.py
-      - scripts/ingest.py
-      - engine/memory_engine_parallel_lms.py
-      - references/AUTO_INTEGRATION.md
-      - memory_service.py
-      - requirements.txt
+      - infinite-context-memory/scripts/recall.py
+      - infinite-context-memory/scripts/ingest.py
+      - infinite-context-memory/engine/memory_engine_parallel_lms.py
+      - infinite-context-memory/references/AUTO_INTEGRATION.md
+      - infinite-context-memory/memory_service.py
+      - infinite-context-memory/requirements.txt
 ---
 
 # Infinite Context Memory 🦞
@@ -31,11 +29,11 @@ metadata:
 ## 🛠 Tools
 
 ### `recall_facts`
-- **Cmd:** `python scripts/recall.py "{{query}}"`
+- **Cmd:** `python infinite-context-memory/scripts/recall.py "{{query}}"`
 - **Goal:** Search historical data for specific names, codes, or technical facts.
 
 ### `memorize_data`
-- **Cmd:** `python scripts/ingest.py "{{filename}}" "{{text}}"`
+- **Cmd:** `python infinite-context-memory/scripts/ingest.py "{{filename}}" "{{text}}"`
 - **Goal:** Ingest research papers, logs, or long conversations into the local brain.
 
 ---
@@ -47,4 +45,4 @@ metadata:
 - **Bypass:** Hardened Direct-Return Bypass
 
 ## 🚀 Final Step
-Run `python memory_service.py` to activate the sidecar before use.
+Run `python infinite-context-memory/memory_service.py` to activate the sidecar before use.
