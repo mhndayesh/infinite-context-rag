@@ -5,6 +5,15 @@
 
 ---
 
+## 🧪 LATEST BENCHMARK: Natural Conversation (Feb 27, 2026)
+**[100% RECALL (20/20) - NATURAL FLOW TEST]**
+The system has been stress-tested with a 20-question "Natural Conversation" flow, achieving perfect adjudication across noisy queries and "greedy" candidates using local models.
+
+👉 **[TRY THE LATEST VERIFIED BUILD HERE](locall%20working%20rag%20test%20this/)**  
+*Help us test this local 128k-512k RAG pipeline and report your scores!*
+
+---
+
 ## 🚀 NEW: Phase 16 Breakthrough (Feb 24, 2026)
 The architecture has been upgraded to a **High-Precision Parallel Engine**. 
 
