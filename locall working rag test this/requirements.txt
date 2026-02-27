@@ -1,0 +1,8 @@
+fastapi[all]
+uvicorn
+chromadb
+openai
+requests
+python-dotenv
+aiohttp
+langchain-text-splitters
